@@ -179,7 +179,7 @@ void display_initial_time(struct tm *t)
 // Configure the first line of text
 void configureBoldLayer(TextLayer *textlayer)
 {
-  text_layer_set_font(textlayer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_GOTHAM_BOLD_40)));
+  text_layer_set_font(textlayer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_GOTHAM_BOLD_39)));
   text_layer_set_text_color(textlayer, GColorWhite);
   text_layer_set_background_color(textlayer, GColorClear);
   text_layer_set_text_alignment(textlayer, GTextAlignmentLeft);
