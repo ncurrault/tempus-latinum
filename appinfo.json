@@ -1,0 +1,35 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Nicholas C.",
+    "longName": "Text Watch in Latin",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "fonts/gotham-extra-narrow-bold.ttf",
+                "name": "GOTHAM_BOLD_40",
+                "type": "font"
+            },
+            {
+                "file": "fonts/gotham-extra-narrow-light.ttf",
+                "name": "GOTHAM_LIGHT_30",
+                "type": "font"
+            },
+            {
+                "file": "images/menu_icon.png",
+                "name": "IMAGE_MENU_ICON",
+                "type": "png"
+            }
+        ]
+    },
+    "shortName": "Tempus Latinum",
+    "uuid": "4a6e04ad-132a-48ab-b165-7ff4a99872d3",
+    "versionCode": 1,
+    "versionLabel": "0.1",
+    "watchapp": {
+        "watchface": true
+    }
+}
