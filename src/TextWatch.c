@@ -38,49 +38,88 @@ static void destroy_property_animation(PropertyAnimation **prop_animation) {
 }
 
 //Handle Date
+char* toRomanPlace(int place, char* oneLetter, char* fiveLetter, char* tenLetter) {
+	static char ret[] = "";
+	if (place < 4)
+	{
+		for (int i=0; i<place; i++)
+			strcat(ret, oneLetter);
+		return ret;
+	}
+	else if (place == 4)
+	{
+		strcat(ret, oneLetter);
+		strcat(ret, fiveLetter);
+	}
+	else if (place == 9)
+	{
+		strcat(ret, oneLetter);
+		strcat(ret, tenLetter);
+	}
+	else
+	{
+		strcat(ret, fiveLetter);
+		strcat(ret, toRomanPlace(place - 5, oneLetter, fiveLetter, tenLetter));
+	}
+	
+	return ret;
+}
 char* toRomanNumeral(int num)
 {
-	// TODO: this function
+	int ones = num % 10;
+	int tens = (num / 10) % 10;
+	int hundreds = (num / 100) % 10;
+	int thousands = (num / 1000) % 10;
+	
+	static char ret[] = "";
+	for (int i=0; i < thousands; i++)
+		strcat(ret,"M");
+	strcat(ret, toRomanPlace(hundreds, "C", "D", "M"));
+	strcat(ret, toRomanPlace(tens, "X", "L", "C"));
+	strcat(ret, toRomanPlace(ones, "I", "V", "X"));
+	
+	return ret;
 }
 void setDate(struct tm *tm)
 {
-  static char dateString[] = "september 99th, 9999";
+  static char dateString[] = "september 99th, ";
   static char dayString[] = "wednesday";
   switch(tm->tm_mday)
   {
     case 1 :
     case 21 :
     case 31 :
-      strftime(dateString, sizeof(dateString), "%B %est, %Y", tm);
+      strftime(dateString, sizeof(dateString), "%B %est, ", tm);
       break;
     case 2 :
     case 22 :
-      strftime(dateString, sizeof(dateString), "%B %end, %Y", tm);
+      strftime(dateString, sizeof(dateString), "%B %end, ", tm);
       break;
     case 3 :
     case 23 :
-      strftime(dateString, sizeof(dateString), "%B %erd, %Y", tm);
+      strftime(dateString, sizeof(dateString), "%B %erd, ", tm);
       break;
     default :
-      strftime(dateString, sizeof(dateString), "%B %eth, %Y", tm);
+      strftime(dateString, sizeof(dateString), "%B %eth, ", tm);
       break;
   }
+  //strcat(dateString, toRomanNumeral((*tm).tm_year));
   
   strftime(dayString, sizeof(dayString), "%A", tm);
   if (strcmp(dayString, "Sunday") == 0)
-	  strcpy(dayString, "Dies Solis");
+	  strcpy(dayString, "Solis");
   else if (strcmp(dayString, "Monday") == 0)
-	  strcpy(dayString, "Dies Lunae");
+	  strcpy(dayString, "Lunae");
   else if (strcmp(dayString, "Tuesday") == 0)
-	  strcpy(dayString, "Dies Martis");
+	  strcpy(dayString, "Martis");
   else if (strcmp(dayString, "Wednesday") == 0)
-	  strcpy(dayString, "Dies Mercurii");
+	  strcpy(dayString, "Mercurii");
   else if (strcmp(dayString, "Thursday") == 0)
-	  strcpy(dayString, "Dies Iovis");
+	  strcpy(dayString, "Iovis");
   else if (strcmp(dayString, "Friday") == 0)
-	  strcpy(dayString, "Dies Veneris");
+	  strcpy(dayString, "Veneris");
   else if (strcmp(dayString, "Saturday") == 0)
-	  strcpy(dayString, "Dies Saturnī");
+	  strcpy(dayString, "Saturnī");
 	
   dateString[0] = tolower((int)dateString[0]);
   dayString[0] = tolower((int)dayString[0]);
