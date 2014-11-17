@@ -51,7 +51,7 @@ static size_t append_number(char* words, int num, short isOh) {
     return strlen(TEENS[ones_val]);
   }
   
-  if (ones_val > 7)
+  if (ones_val > 7 && tens_val > 1)
   {
 	  if (ones_val == 8)
 	  {

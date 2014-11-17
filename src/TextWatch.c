@@ -38,6 +38,10 @@ static void destroy_property_animation(PropertyAnimation **prop_animation) {
 }
 
 //Handle Date
+char* toRomanNumeral(int num)
+{
+	// TODO: this function
+}
 void setDate(struct tm *tm)
 {
   static char dateString[] = "september 99th, 9999";
@@ -61,7 +65,23 @@ void setDate(struct tm *tm)
       strftime(dateString, sizeof(dateString), "%B %eth, %Y", tm);
       break;
   }
+  
   strftime(dayString, sizeof(dayString), "%A", tm);
+  if (strcmp(dayString, "Sunday") == 0)
+	  strcpy(dayString, "Dies Solis");
+  else if (strcmp(dayString, "Monday") == 0)
+	  strcpy(dayString, "Dies Lunae");
+  else if (strcmp(dayString, "Tuesday") == 0)
+	  strcpy(dayString, "Dies Martis");
+  else if (strcmp(dayString, "Wednesday") == 0)
+	  strcpy(dayString, "Dies Mercurii");
+  else if (strcmp(dayString, "Thursday") == 0)
+	  strcpy(dayString, "Dies Iovis");
+  else if (strcmp(dayString, "Friday") == 0)
+	  strcpy(dayString, "Dies Veneris");
+  else if (strcmp(dayString, "Saturday") == 0)
+	  strcpy(dayString, "Dies Saturnī");
+	
   dateString[0] = tolower((int)dateString[0]);
   dayString[0] = tolower((int)dayString[0]);
   text_layer_set_text(date, dateString);
