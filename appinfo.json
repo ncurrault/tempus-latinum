@@ -9,11 +9,13 @@
     "resources": {
         "media": [
             {
+                "compatibility": "2.7",
                 "file": "fonts/gotham-extra-narrow-bold.ttf",
                 "name": "GOTHAM_BOLD_39",
                 "type": "font"
             },
             {
+                "compatibility": "2.7",
                 "file": "fonts/gotham-extra-narrow-light.ttf",
                 "name": "GOTHAM_LIGHT_30",
                 "type": "font"
@@ -25,10 +27,11 @@
             }
         ]
     },
+    "sdkVersion": "2",
     "shortName": "Tempus Latinum",
-    "uuid": "4a6e04ad-132a-48ab-b165-7ff4a99872d3",
+    "uuid": "0BFF7B70-B87F-4A1D-B032-F8320311246E",
     "versionCode": 1,
-    "versionLabel": "0.1",
+    "versionLabel": "1.0",
     "watchapp": {
         "watchface": true
     }

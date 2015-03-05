@@ -38,88 +38,166 @@ static void destroy_property_animation(PropertyAnimation **prop_animation) {
 }
 
 //Handle Date
-char* toRomanPlace(int place, char* oneLetter, char* fiveLetter, char* tenLetter) {
-	static char ret[] = "";
+char* toRomanPlace(int place, const char* one_letter, const char* five_letter, const char* ten_letter)
+{
+	char* ret = (char*)malloc(5);
+	*ret = '\0';
+	
 	if (place < 4)
 	{
 		for (int i=0; i<place; i++)
-			strcat(ret, oneLetter);
-		return ret;
+			strcat(ret, one_letter);
 	}
 	else if (place == 4)
 	{
-		strcat(ret, oneLetter);
-		strcat(ret, fiveLetter);
+		strcat(ret, one_letter);
+		strcat(ret, five_letter);
 	}
 	else if (place == 9)
 	{
-		strcat(ret, oneLetter);
-		strcat(ret, tenLetter);
+		strcat(ret, one_letter);
+		strcat(ret, ten_letter);
 	}
 	else
 	{
-		strcat(ret, fiveLetter);
-		strcat(ret, toRomanPlace(place - 5, oneLetter, fiveLetter, tenLetter));
+		strcat(ret, five_letter);
+		
+		for (int i=1; i<place-5; i++)
+			strcat(ret, one_letter);
 	}
-	
 	return ret;
 }
+
 char* toRomanNumeral(int num)
 {
 	int ones = num % 10;
 	int tens = (num / 10) % 10;
 	int hundreds = (num / 100) % 10;
 	int thousands = (num / 1000) % 10;
+
+	char* ret = (char*)malloc(15);
+	*ret = '\0';
 	
-	static char ret[] = "";
-	for (int i=0; i < thousands; i++)
-		strcat(ret,"M");
+	for (int i=0; i<thousands; i++)
+		strcat(ret, "M");
+	
 	strcat(ret, toRomanPlace(hundreds, "C", "D", "M"));
 	strcat(ret, toRomanPlace(tens, "X", "L", "C"));
 	strcat(ret, toRomanPlace(ones, "I", "V", "X"));
 	
 	return ret;
 }
+
+char* monthNumToRomanName(int month) {
+	switch (month) {
+		case 1:
+			return "Januaris";
+		case 2:
+			return "Februaris";
+		case 3:
+			return "Martius";
+		case 4:
+			return "Aprilis";
+		case 5:
+			return "Maius";
+		case 6:
+			return "Iunius";
+		case 7:
+			return "Quintilis";
+		case 8:
+			return "Sextilis";
+		case 9:
+			return "September";
+		case 10:
+			return "October";
+		case 11:
+			return "November";
+		case 12:
+			return "December";
+		default:
+			APP_LOG(APP_LOG_LEVEL_WARNING, "Month not recognized: %i", month);
+			return "";
+	}
+}
+
+
+char* toRomanDate(int month, int day) {
+	month++; // Bizarre storage scheme in struct tm
+	
+	char* ret = (char*) malloc(25);
+	strcpy(ret, "");
+	
+	int longMonths[] = {1, 3, 5, 7, 8, 10, 12};
+	bool longMonth = false;
+	for (int i=0; i<7; i++)
+	{
+		if (longMonths[i] == month)
+			longMonth = true;
+	}
+	
+	int kalends = 1;
+	
+	int nones = longMonth ? 7  :  5;
+	int ides  = longMonth ? 15 : 13;
+	
+	if (day == kalends)
+	{
+		strcat(ret, "Kal. ");
+		strcat(ret, monthNumToRomanName(month));
+	}
+	else if (day == nones)
+	{
+		strcat(ret, "Non. ");
+		strcat(ret, monthNumToRomanName(month));
+	}
+	else if (day == ides)
+	{
+		strcat(ret, "Ides ");
+		strcat(ret, monthNumToRomanName(month));
+	}
+	else if (day < nones)
+	{
+		strcat(ret, "a.d.");
+		strcat(ret, toRomanNumeral(nones - day + 1));
+		strcat(ret, " Non. ");
+		strcat(ret, monthNumToRomanName(month));
+	}
+	else if (day > nones && day < ides)
+	{
+		strcat(ret, "a.d.");
+		strcat(ret, toRomanNumeral(nones - day + 1));
+		strcat(ret, " Ides ");
+		strcat(ret, monthNumToRomanName(month));
+	}
+	
+	strcat(ret, ", ");
+	return ret;
+}
+
 void setDate(struct tm *tm)
 {
-  static char dateString[] = "september 99th, ";
+  static char* dateString;
   static char dayString[] = "wednesday";
-  switch(tm->tm_mday)
-  {
-    case 1 :
-    case 21 :
-    case 31 :
-      strftime(dateString, sizeof(dateString), "%B %est, ", tm);
-      break;
-    case 2 :
-    case 22 :
-      strftime(dateString, sizeof(dateString), "%B %end, ", tm);
-      break;
-    case 3 :
-    case 23 :
-      strftime(dateString, sizeof(dateString), "%B %erd, ", tm);
-      break;
-    default :
-      strftime(dateString, sizeof(dateString), "%B %eth, ", tm);
-      break;
-  }
-  //strcat(dateString, toRomanNumeral((*tm).tm_year));
+  
+  dateString = toRomanDate(tm->tm_mon, tm->tm_mday);
+  
+  strcat(dateString, toRomanNumeral((*tm).tm_year + 1900));
   
   strftime(dayString, sizeof(dayString), "%A", tm);
   if (strcmp(dayString, "Sunday") == 0)
-	  strcpy(dayString, "Solis");
+	  strcpy(dayString, "dies Solis");
   else if (strcmp(dayString, "Monday") == 0)
-	  strcpy(dayString, "Lunae");
+	  strcpy(dayString, "dies Lunae");
   else if (strcmp(dayString, "Tuesday") == 0)
-	  strcpy(dayString, "Martis");
+	  strcpy(dayString, "dies Martis");
   else if (strcmp(dayString, "Wednesday") == 0)
-	  strcpy(dayString, "Mercurii");
+	  strcpy(dayString, "dies Mercurii");
   else if (strcmp(dayString, "Thursday") == 0)
-	  strcpy(dayString, "Iovis");
+	  strcpy(dayString, "dies Iovis");
   else if (strcmp(dayString, "Friday") == 0)
-	  strcpy(dayString, "Veneris");
+	  strcpy(dayString, "dies Veneris");
   else if (strcmp(dayString, "Saturday") == 0)
-	  strcpy(dayString, "Saturnī");
+	  strcpy(dayString, "dies Saturnī");
 	
   dateString[0] = tolower((int)dateString[0]);
   dayString[0] = tolower((int)dayString[0]);
