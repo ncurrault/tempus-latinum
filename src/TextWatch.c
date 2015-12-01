@@ -174,7 +174,7 @@ char* toRomanDate(int month, int day) {
 		strcat(ret, "a.d.");
 		strcat(ret, toRomanNumeral((longMonth ? 31 : 30) - day + 1));
 		strcat(ret, " Kal. ");
-		strcat(ret, monthNumToRomanName((month + 1) % 12));
+		strcat(ret, monthNumToRomanName(month == 12 ? 1 : month + 1));
 	}
 	
 	strcat(ret, ", ");

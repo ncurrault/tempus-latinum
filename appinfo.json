@@ -9,10 +9,9 @@
     "resources": {
         "media": [
             {
-                "compatibility": "2.7",
-                "file": "fonts/gotham-extra-narrow-bold.ttf",
-                "name": "GOTHAM_BOLD_39",
-                "type": "font"
+                "file": "images/menu_icon.png",
+                "name": "IMAGE_MENU_ICON",
+                "type": "png"
             },
             {
                 "compatibility": "2.7",
@@ -21,9 +20,10 @@
                 "type": "font"
             },
             {
-                "file": "images/menu_icon.png",
-                "name": "IMAGE_MENU_ICON",
-                "type": "png"
+                "compatibility": "2.7",
+                "file": "fonts/gotham-extra-narrow-bold.ttf",
+                "name": "GOTHAM_BOLD_39",
+                "type": "font"
             }
         ]
     },
